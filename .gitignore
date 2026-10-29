@@ -1,0 +1,18 @@
+# Ejecutables de Windows
+*.exe
+
+# Archivos objeto y compilados
+*.o
+*.obj
+*.out
+
+# Carpetas de compilación
+build/
+bin/
+
+# Configuración personal del editor
+.vscode/
+
+# Archivos temporales
+*.tmp
+*.log
