@@ -1,54 +1,83 @@
 #include "../include/ordenamientos.h"
 
-// Ordena una sección del vector usando partición de Hoare.
+// Ordena una sección usando partición de Hoare.
 void ordenarQuick(std::vector<int>& arreglo,
-                  int inicio, int fin) {
+                  int inicio, int fin,
+                  Metricas& metricas,
+                  int profundidad) {
+
+    if (profundidad > metricas.profundidadMaxima) {
+        metricas.profundidadMaxima = profundidad;
+    }
 
     int i = inicio;
     int j = fin;
 
-    // Elegimos como pivote el elemento central.
     int pivote = arreglo[inicio + (fin - inicio) / 2];
 
     while (i <= j) {
 
-        // Buscar un elemento que debería estar a la derecha.
-        while (arreglo[i] < pivote) {
+        // Buscar desde la izquierda.
+        while (true) {
+            metricas.comparaciones++;
+
+            if (!(arreglo[i] < pivote)) {
+                break;
+            }
+
             i++;
         }
 
-        // Buscar un elemento que debería estar a la izquierda.
-        while (arreglo[j] > pivote) {
+        // Buscar desde la derecha.
+        while (true) {
+            metricas.comparaciones++;
+
+            if (!(arreglo[j] > pivote)) {
+                break;
+            }
+
             j--;
         }
 
-        // Intercambiar si los recorridos todavía se cruzan.
         if (i <= j) {
-            int temporal = arreglo[i];
-            arreglo[i] = arreglo[j];
-            arreglo[j] = temporal;
+
+            // Solo contar un intercambio si son posiciones distintas.
+            if (i < j) {
+                int temporal = arreglo[i];
+                arreglo[i] = arreglo[j];
+                arreglo[j] = temporal;
+
+                metricas.intercambios++;
+                metricas.movimientos += 3;
+            }
 
             i++;
             j--;
         }
     }
 
-    // Ordenar recursivamente las regiones restantes.
+    // Ordenar las regiones restantes.
     if (inicio < j) {
-        ordenarQuick(arreglo, inicio, j);
+        ordenarQuick(arreglo, inicio, j,
+                     metricas, profundidad + 1);
     }
 
     if (i < fin) {
-        ordenarQuick(arreglo, i, fin);
+        ordenarQuick(arreglo, i, fin,
+                     metricas, profundidad + 1);
     }
 }
 
 // Función pública.
-void quickSort(std::vector<int>& arreglo) {
+void quickSort(std::vector<int>& arreglo, Metricas& metricas) {
+
+    metricas = Metricas{};
+
     if (arreglo.empty()) {
         return;
     }
 
     ordenarQuick(arreglo, 0,
-                 static_cast<int>(arreglo.size()) - 1);
+                 static_cast<int>(arreglo.size()) - 1,
+                 metricas, 1);
 }

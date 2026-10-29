@@ -1,46 +1,62 @@
 #include "../include/ordenamientos.h"
 
-// Combina dos mitades que ya están ordenadas.
+// Combina dos mitades ordenadas.
 void mezclar(std::vector<int>& arreglo,
-             int inicio, int medio, int fin) {
+             int inicio, int medio, int fin,
+             Metricas& metricas) {
 
     std::vector<int> auxiliar;
+    auxiliar.reserve(fin - inicio + 1);
 
     int i = inicio;
     int j = medio + 1;
 
-    // Comparar los elementos de ambas mitades.
+    // Comparar elementos de ambas mitades.
     while (i <= medio && j <= fin) {
+        metricas.comparaciones++;
+
         if (arreglo[i] <= arreglo[j]) {
             auxiliar.push_back(arreglo[i]);
+            metricas.movimientos++;
             i++;
         } else {
             auxiliar.push_back(arreglo[j]);
+            metricas.movimientos++;
             j++;
         }
     }
 
-    // Copiar los elementos que quedaron en la primera mitad.
+    // Copiar los elementos restantes de la primera mitad.
     while (i <= medio) {
         auxiliar.push_back(arreglo[i]);
+        metricas.movimientos++;
         i++;
     }
 
-    // Copiar los elementos que quedaron en la segunda mitad.
+    // Copiar los elementos restantes de la segunda mitad.
     while (j <= fin) {
         auxiliar.push_back(arreglo[j]);
+        metricas.movimientos++;
         j++;
     }
 
-    // Devolver los elementos ordenados al arreglo original.
+    // Copiar el resultado al arreglo original.
     for (int k = 0; k < static_cast<int>(auxiliar.size()); k++) {
         arreglo[inicio + k] = auxiliar[k];
+        metricas.movimientos++;
     }
 }
 
-// Función recursiva auxiliar.
+// Función recursiva.
 void ordenarMerge(std::vector<int>& arreglo,
-                  int inicio, int fin) {
+                  int inicio, int fin,
+                  Metricas& metricas,
+                  int profundidad) {
+
+    // Registrar la mayor profundidad alcanzada.
+    if (profundidad > metricas.profundidadMaxima) {
+        metricas.profundidadMaxima = profundidad;
+    }
 
     if (inicio >= fin) {
         return;
@@ -48,18 +64,25 @@ void ordenarMerge(std::vector<int>& arreglo,
 
     int medio = inicio + (fin - inicio) / 2;
 
-    ordenarMerge(arreglo, inicio, medio);
-    ordenarMerge(arreglo, medio + 1, fin);
+    ordenarMerge(arreglo, inicio, medio,
+                 metricas, profundidad + 1);
 
-    mezclar(arreglo, inicio, medio, fin);
+    ordenarMerge(arreglo, medio + 1, fin,
+                 metricas, profundidad + 1);
+
+    mezclar(arreglo, inicio, medio, fin, metricas);
 }
 
 // Función pública.
-void mergeSort(std::vector<int>& arreglo) {
+void mergeSort(std::vector<int>& arreglo, Metricas& metricas) {
+
+    metricas = Metricas{};
+
     if (arreglo.empty()) {
         return;
     }
 
     ordenarMerge(arreglo, 0,
-                 static_cast<int>(arreglo.size()) - 1);
+                 static_cast<int>(arreglo.size()) - 1,
+                 metricas, 1);
 }

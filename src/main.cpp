@@ -16,14 +16,15 @@ void mostrarVector(const std::vector<int>& arreglo) {
 
 bool probarCaso(const std::vector<int>& original) {
 
-    // Cada algoritmo recibe una copia idéntica.
     std::vector<int> datosMerge = original;
     std::vector<int> datosQuick = original;
 
-    mergeSort(datosMerge);
-    quickSort(datosQuick);
+    Metricas metricasMerge;
+    Metricas metricasQuick;
 
-    // Resultado esperado, calculado con la biblioteca estándar.
+    mergeSort(datosMerge, metricasMerge);
+    quickSort(datosQuick, metricasQuick);
+
     std::vector<int> esperado = original;
     std::sort(esperado.begin(), esperado.end());
 
@@ -39,12 +40,32 @@ bool probarCaso(const std::vector<int>& original) {
     std::cout << "QuickSort: ";
     mostrarVector(datosQuick);
 
+    std::cout << "\n--- Metricas de MergeSort ---\n";
+    std::cout << "Comparaciones: "
+              << metricasMerge.comparaciones << "\n";
+    std::cout << "Movimientos: "
+              << metricasMerge.movimientos << "\n";
+    std::cout << "Intercambios: "
+              << metricasMerge.intercambios << "\n";
+    std::cout << "Profundidad maxima: "
+              << metricasMerge.profundidadMaxima << "\n";
+
+    std::cout << "\n--- Metricas de QuickSort ---\n";
+    std::cout << "Comparaciones: "
+              << metricasQuick.comparaciones << "\n";
+    std::cout << "Movimientos: "
+              << metricasQuick.movimientos << "\n";
+    std::cout << "Intercambios: "
+              << metricasQuick.intercambios << "\n";
+    std::cout << "Profundidad maxima: "
+              << metricasQuick.profundidadMaxima << "\n";
+
     if (mergeCorrecto && quickCorrecto) {
-        std::cout << "Resultado: CORRECTO\n";
+        std::cout << "\nResultado: CORRECTO\n";
         return true;
     }
 
-    std::cout << "Resultado: ERROR\n";
+    std::cout << "\nResultado: ERROR\n";
     return false;
 }
 
