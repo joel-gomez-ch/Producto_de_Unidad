@@ -1,6 +1,10 @@
 
 # Comparación experimental de MergeSort y QuickSort
 
+## Video de demostracion del proyecto:
+
+----> https://youtu.be/SoTj-caOBTw?si=ljfVldpPOSwirQJ8 <----
+
 ## 1. Descripción del proyecto
 
 Este proyecto compara experimentalmente el rendimiento de los algoritmos de ordenamiento **MergeSort** y **QuickSort**, implementados en C++17.
@@ -73,10 +77,7 @@ comparacion-ordenamientos/
 Desde la raíz del proyecto, ejecutar:
 
 ```bash
-g++ -std=c++17 -O2 -Iinclude \
-src/main.cpp src/mergesort.cpp \
-src/quicksort.cpp src/experimento.cpp \
--o experimento.exe
+g++ -std=c++17 -O2 -Iinclude src/mergesort.cpp src/quicksort.cpp src/experimento.cpp -o experimento.exe
 ```
 
 ### Ejecutar el experimento
@@ -84,7 +85,7 @@ src/quicksort.cpp src/experimento.cpp \
 En Git Bash, ejecutar:
 
 ```bash
-./experimento.exe "$(git rev-parse HEAD)"
+.\experimento.exe "$(git rev-parse HEAD)"
 ```
 
 El programa genera el archivo `results/resultados.csv` con las mediciones del experimento.
@@ -164,13 +165,12 @@ El archivo CSV permite revisar las mediciones individuales y verificar las compa
 
 ## 9. Video de demostración
 
-**Ver video de demostración en YouTube** `[En proceso]`
+**Ver video de demostración en YouTube** `[https://youtu.be/SoTj-caOBTw?si=ljfVldpPOSwirQJ8]`
 
 El video presenta la ejecución del programa y una explicación de los resultados obtenidos.
 
 ## 10. Versión final del experimento
 
-- **Commit asociado a la versión experimental:** `[En proceso]`
 - **Repositorio:** [https://github.com/joel-gomez-ch/Producto_de_Unidad]
 
 Para consultar el commit registrado en una ejecución, se puede utilizar:
